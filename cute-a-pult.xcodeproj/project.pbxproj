@@ -158,7 +158,6 @@
 		EC76352014042D22008FCE5D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC76351F14042D22008FCE5D /* RootViewController.m */; };
 		EC76352314042D22008FCE5D /* HelloWorldLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = EC76352214042D22008FCE5D /* HelloWorldLayer.mm */; };
 		EC76352614042D22008FCE5D /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = EC76352514042D22008FCE5D /* GLES-Render.mm */; };
-		EC76352914042D22008FCE5D /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = EC76352814042D22008FCE5D /* blocks.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -472,7 +471,6 @@
 		EC76352414042D22008FCE5D /* GLES-Render.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
 		EC76352514042D22008FCE5D /* GLES-Render.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "GLES-Render.mm"; sourceTree = "<group>"; };
 		EC76352714042D22008FCE5D /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
-		EC76352814042D22008FCE5D /* blocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blocks.png; path = Resources/blocks.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -558,7 +556,6 @@
 				EC76336614042D1F008FCE5D /* Icon@2x.png */,
 				EC76336814042D1F008FCE5D /* Info.plist */,
 				EC76336914042D1F008FCE5D /* iTunesArtwork */,
-				EC76352814042D22008FCE5D /* blocks.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1062,7 +1059,6 @@
 				EC76336514042D1F008FCE5D /* Icon.png in Resources */,
 				EC76336714042D1F008FCE5D /* Icon@2x.png in Resources */,
 				EC76336A14042D1F008FCE5D /* iTunesArtwork in Resources */,
-				EC76352914042D22008FCE5D /* blocks.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1302,6 +1298,7 @@
 				EC76352E14042D22008FCE5D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
