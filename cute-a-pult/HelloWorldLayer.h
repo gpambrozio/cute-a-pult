@@ -17,6 +17,9 @@
 {
 	b2World* world;
 	GLESDebugDraw *m_debugDraw;
+
+    b2Fixture *armFixture;
+    b2Body *armBody;
 }
 
 // returns a CCScene that contains the HelloWorldLayer as the only child
