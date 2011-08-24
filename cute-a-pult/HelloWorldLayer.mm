@@ -15,6 +15,7 @@
 //Box2D is optimized for objects of 1x1 metre therefore it makes sense
 //to define the ratio so that your most common object type is 1x1 metre.
 #define PTM_RATIO 32
+#define FLOOR_HEIGTH    62.0f
 
 // enums that will be used as tags
 enum {
@@ -80,6 +81,33 @@ enum {
 //		flags += b2DebugDraw::e_centerOfMassBit;
 		m_debugDraw->SetFlags(flags);		
 		
+        CCSprite *sprite = [CCSprite spriteWithFile:@"bg.png"];
+        sprite.anchorPoint = CGPointZero;
+        [self addChild:sprite z:-1];
+        
+        sprite = [CCSprite spriteWithFile:@"catapult_base_2.png"];
+        sprite.anchorPoint = CGPointZero;
+        sprite.position = CGPointMake(181.0f, FLOOR_HEIGTH);
+        [self addChild:sprite z:0];
+		
+        sprite = [CCSprite spriteWithFile:@"squirrel_1.png"];
+        sprite.anchorPoint = CGPointZero;
+        sprite.position = CGPointMake(11.0f, FLOOR_HEIGTH);
+        [self addChild:sprite z:0];
+		
+        sprite = [CCSprite spriteWithFile:@"catapult_base_1.png"];
+        sprite.anchorPoint = CGPointZero;
+        sprite.position = CGPointMake(181.0f, FLOOR_HEIGTH);
+        [self addChild:sprite z:9];
+		
+        sprite = [CCSprite spriteWithFile:@"squirrel_2.png"];
+        sprite.anchorPoint = CGPointZero;
+        sprite.position = CGPointMake(240.0f, FLOOR_HEIGTH);
+        [self addChild:sprite z:9];
+		
+        sprite = [CCSprite spriteWithFile:@"fg.png"];
+        sprite.anchorPoint = CGPointZero;
+        [self addChild:sprite z:10];
 		
 		// Define the ground body.
 		b2BodyDef groundBodyDef;
