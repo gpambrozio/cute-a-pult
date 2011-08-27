@@ -21,6 +21,9 @@
     b2Fixture *armFixture;
     b2Body *armBody;
     b2RevoluteJoint *armJoint;
+    b2MouseJoint *mouseJoint;
+    b2Body *groundBody;
+    BOOL releasingArm;
 }
 
 // returns a CCScene that contains the HelloWorldLayer as the only child

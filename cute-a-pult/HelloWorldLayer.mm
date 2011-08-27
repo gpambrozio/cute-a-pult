@@ -116,7 +116,7 @@ enum {
 		// Call the body factory which allocates memory for the ground body
 		// from a pool and creates the ground box shape (also from a pool).
 		// The body is also added to the world.
-		b2Body* groundBody = world->CreateBody(&groundBodyDef);
+		groundBody = world->CreateBody(&groundBodyDef);
 		
 		// Define the ground box shape.
 		b2PolygonShape groundBox;		
@@ -163,7 +163,7 @@ enum {
         armJointDef.Initialize(groundBody, armBody, b2Vec2(233.0f/PTM_RATIO, FLOOR_HEIGTH/PTM_RATIO));
         armJointDef.enableMotor = true;
         armJointDef.enableLimit = true;
-        armJointDef.motorSpeed  = -1260;
+        armJointDef.motorSpeed  = -10;
         armJointDef.lowerAngle  = CC_DEGREES_TO_RADIANS(9);
         armJointDef.upperAngle  = CC_DEGREES_TO_RADIANS(75);
         armJointDef.maxMotorTorque = 4800;
@@ -191,6 +191,48 @@ enum {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
+}
+
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (mouseJoint != nil) return;
+    
+    UITouch *myTouch = [touches anyObject];
+    CGPoint location = [myTouch locationInView:[myTouch view]];
+    location = [[CCDirector sharedDirector] convertToGL:location];
+    b2Vec2 locationWorld = b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
+    
+    if (locationWorld.x < armBody->GetWorldCenter().x + 50.0/PTM_RATIO)
+    {
+        b2MouseJointDef md;
+        md.bodyA = groundBody;
+        md.bodyB = armBody;
+        md.target = locationWorld;
+        md.maxForce = 2000;
+        
+        mouseJoint = (b2MouseJoint *)world->CreateJoint(&md);
+    }
+}
+
+- (void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (mouseJoint == nil) return;
+    
+    UITouch *myTouch = [touches anyObject];
+    CGPoint location = [myTouch locationInView:[myTouch view]];
+    location = [[CCDirector sharedDirector] convertToGL:location];
+    b2Vec2 locationWorld = b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
+    
+    mouseJoint->SetTarget(locationWorld);
+}
+
+- (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (mouseJoint != nil)
+    {
+        world->DestroyJoint(mouseJoint);
+        mouseJoint = nil;
+    }
 }
 
 -(void) tick: (ccTime) dt
