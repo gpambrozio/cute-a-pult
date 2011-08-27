@@ -157,6 +157,19 @@ enum {
         armBox.SetAsBox(11.0f/PTM_RATIO, 91.0f/PTM_RATIO);
         armFixture = armBody->CreateFixture(&armBoxDef);
 		
+        // Create a joint to fix the catapult to the floor.
+        //
+        b2RevoluteJointDef armJointDef;
+        armJointDef.Initialize(groundBody, armBody, b2Vec2(233.0f/PTM_RATIO, FLOOR_HEIGTH/PTM_RATIO));
+        armJointDef.enableMotor = true;
+        armJointDef.enableLimit = true;
+        armJointDef.motorSpeed  = -1260;
+        armJointDef.lowerAngle  = CC_DEGREES_TO_RADIANS(9);
+        armJointDef.upperAngle  = CC_DEGREES_TO_RADIANS(75);
+        armJointDef.maxMotorTorque = 4800;
+        
+        armJoint = (b2RevoluteJoint*)world->CreateJoint(&armJointDef);
+
 		[self schedule: @selector(tick:)];
 	}
 	return self;
