@@ -356,6 +356,21 @@ enum {
             bulletJoint = nil;
         }
     }
+    
+    // Bullet is moving.
+    if (bulletBody && bulletJoint == nil)
+    {
+        b2Vec2 position = bulletBody->GetPosition();
+        CGPoint myPosition = self.position;
+        CGSize screenSize = [CCDirector sharedDirector].winSize;
+        
+        // Move the camera.
+        if (position.x > screenSize.width / 2.0f / PTM_RATIO)
+        {
+            myPosition.x = -MIN(screenSize.width * 2.0f - screenSize.width, position.x * PTM_RATIO - screenSize.width / 2.0f);
+            self.position = myPosition;
+        }
+    }
 }
 
 // on "dealloc" you need to release all your retained objects
