@@ -24,6 +24,13 @@ enum {
 	kTagAnimation1 = 1,
 };
 
+@interface HelloWorldLayer()
+
+- (void)resetGame;
+- (void)createBullets:(int)count;
+- (BOOL)attachBullet;
+
+@end
 
 // HelloWorldLayer implementation
 @implementation HelloWorldLayer
@@ -166,13 +173,83 @@ enum {
         armJointDef.motorSpeed  = -10;
         armJointDef.lowerAngle  = CC_DEGREES_TO_RADIANS(9);
         armJointDef.upperAngle  = CC_DEGREES_TO_RADIANS(75);
-        armJointDef.maxMotorTorque = 4800;
+        armJointDef.maxMotorTorque = 700;
         
         armJoint = (b2RevoluteJoint*)world->CreateJoint(&armJointDef);
 
 		[self schedule: @selector(tick:)];
+        [self performSelector:@selector(resetGame) withObject:nil afterDelay:0.5f];
 	}
 	return self;
+}
+
+- (void)resetGame
+{
+    [self createBullets:4];
+    [self attachBullet];
+}
+
+- (void)createBullets:(int)count
+{
+    currentBullet = 0;
+    CGFloat pos = 62.0f;
+    
+    if (count > 0)
+    {
+        // delta is the spacing between corns
+        // 62 is the position o the screen where we want the corns to start appearing
+        // 165 is the position on the screen where we want the corns to stop appearing
+        // 30 is the size of the corn
+        CGFloat delta = (count > 1)?((165.0f - 62.0f - 30.0f) / (count - 1)):0.0f;
+
+        bullets = [[NSMutableArray alloc] initWithCapacity:count];
+        for (int i=0; i<count; i++, pos+=delta)
+        {
+            // Create the bullet
+            //
+            CCSprite *sprite = [CCSprite spriteWithFile:@"acorn.png"];
+            [self addChild:sprite z:1];
+            
+            b2BodyDef bulletBodyDef;
+            bulletBodyDef.type = b2_dynamicBody;
+            bulletBodyDef.bullet = true;
+            bulletBodyDef.position.Set(pos/PTM_RATIO,(FLOOR_HEIGTH+15.0f)/PTM_RATIO);
+            bulletBodyDef.userData = sprite;
+            b2Body *bullet = world->CreateBody(&bulletBodyDef);
+            bullet->SetActive(false);
+            
+            b2CircleShape circle;
+            circle.m_radius = 15.0/PTM_RATIO;
+            
+            b2FixtureDef ballShapeDef;
+            ballShapeDef.shape = &circle;
+            ballShapeDef.density = 0.8f;
+            ballShapeDef.restitution = 0.2f;
+            ballShapeDef.friction = 0.99f;
+            bullet->CreateFixture(&ballShapeDef);
+            
+            [bullets addObject:[NSValue valueWithPointer:bullet]];
+        }
+    }
+}
+
+- (BOOL)attachBullet
+{
+    if (currentBullet < [bullets count])
+    {
+        bulletBody = (b2Body*)[[bullets objectAtIndex:currentBullet++] pointerValue];
+        bulletBody->SetTransform(b2Vec2(230.0f/PTM_RATIO,(155.0f+FLOOR_HEIGTH)/PTM_RATIO), 0.0f);
+        bulletBody->SetActive(true);
+
+        b2WeldJointDef weldJointDef;
+        weldJointDef.Initialize(bulletBody, armBody, b2Vec2(230.0f/PTM_RATIO,(155.0f+FLOOR_HEIGTH)/PTM_RATIO));
+        weldJointDef.collideConnected = false;
+        
+        bulletJoint = (b2WeldJoint*)world->CreateJoint(&weldJointDef);
+        return YES;
+    }
+    
+    return NO;
 }
 
 -(void) draw
@@ -230,6 +307,11 @@ enum {
 {
     if (mouseJoint != nil)
     {
+        if (armJoint->GetJointAngle() >= CC_DEGREES_TO_RADIANS(20))
+        {
+            releasingArm = YES;
+        }
+
         world->DestroyJoint(mouseJoint);
         mouseJoint = nil;
     }
@@ -260,11 +342,27 @@ enum {
 			myActor.rotation = -1 * CC_RADIANS_TO_DEGREES(b->GetAngle());
 		}	
 	}
+    
+    // Arm is being released.
+    if (releasingArm && bulletJoint)
+    {
+        // Check if the arm reached the end so we can return the limits
+        if (armJoint->GetJointAngle() <= CC_DEGREES_TO_RADIANS(10))
+        {
+            releasingArm = NO;
+            
+            // Destroy joint so the bullet will be free
+            world->DestroyJoint(bulletJoint);
+            bulletJoint = nil;
+        }
+    }
 }
 
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc
 {
+    [bullets release];
+    
 	// in case you have something to dealloc, do it in this method
 	delete world;
 	world = NULL;

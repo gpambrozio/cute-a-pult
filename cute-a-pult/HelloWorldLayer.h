@@ -23,6 +23,13 @@
     b2RevoluteJoint *armJoint;
     b2MouseJoint *mouseJoint;
     b2Body *groundBody;
+
+    NSMutableArray *bullets;
+    int currentBullet;
+
+    b2Body *bulletBody;
+    b2WeldJoint *bulletJoint;
+    
     BOOL releasingArm;
 }
 
