@@ -31,6 +31,9 @@
     b2WeldJoint *bulletJoint;
     
     BOOL releasingArm;
+
+    NSMutableSet *targets;
+    NSMutableSet *enemies;
 }
 
 // returns a CCScene that contains the HelloWorldLayer as the only child
