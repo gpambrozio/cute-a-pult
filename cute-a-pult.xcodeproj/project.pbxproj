@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EC4A3DC8140B013A003B6915 /* MyContactListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC4A3DC6140B013A003B6915 /* MyContactListener.cpp */; };
 		EC76334714042D1F008FCE5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC76334614042D1F008FCE5D /* QuartzCore.framework */; };
 		EC76334914042D1F008FCE5D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC76334814042D1F008FCE5D /* OpenGLES.framework */; };
 		EC76334B14042D1F008FCE5D /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC76334A14042D1F008FCE5D /* OpenAL.framework */; };
@@ -192,6 +193,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EC4A3DC6140B013A003B6915 /* MyContactListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyContactListener.cpp; sourceTree = "<group>"; };
+		EC4A3DC7140B013A003B6915 /* MyContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyContactListener.h; sourceTree = "<group>"; };
 		EC76334214042D1F008FCE5D /* cute-a-pult.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "cute-a-pult.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC76334614042D1F008FCE5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		EC76334814042D1F008FCE5D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -595,6 +598,8 @@
 				EC76351F14042D22008FCE5D /* RootViewController.m */,
 				EC76352114042D22008FCE5D /* HelloWorldLayer.h */,
 				EC76352214042D22008FCE5D /* HelloWorldLayer.mm */,
+				EC4A3DC7140B013A003B6915 /* MyContactListener.h */,
+				EC4A3DC6140B013A003B6915 /* MyContactListener.cpp */,
 				EC76352414042D22008FCE5D /* GLES-Render.h */,
 				EC76352514042D22008FCE5D /* GLES-Render.mm */,
 				EC76352714042D22008FCE5D /* GameConfig.h */,
@@ -1336,6 +1341,7 @@
 				EC76352014042D22008FCE5D /* RootViewController.m in Sources */,
 				EC76352314042D22008FCE5D /* HelloWorldLayer.mm in Sources */,
 				EC76352614042D22008FCE5D /* GLES-Render.mm in Sources */,
+				EC4A3DC8140B013A003B6915 /* MyContactListener.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
