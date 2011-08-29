@@ -11,6 +11,7 @@
 #import "cocos2d.h"
 #import "Box2D.h"
 #import "GLES-Render.h"
+#import "MyContactListener.h"
 
 // HelloWorldLayer
 @interface HelloWorldLayer : CCLayer
@@ -34,6 +35,8 @@
 
     NSMutableSet *targets;
     NSMutableSet *enemies;
+
+    MyContactListener *contactListener;
 }
 
 // returns a CCScene that contains the HelloWorldLayer as the only child

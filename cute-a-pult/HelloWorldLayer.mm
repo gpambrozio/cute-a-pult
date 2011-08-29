@@ -176,6 +176,9 @@ enum {
 
 		[self schedule: @selector(tick:)];
         [self performSelector:@selector(resetGame) withObject:nil afterDelay:0.5f];
+
+        contactListener = new MyContactListener();
+        world->SetContactListener(contactListener);
 	}
 	return self;
 }
@@ -469,6 +472,35 @@ enum {
             self.position = myPosition;
         }
     }
+    
+    // Check for impacts
+    std::set<b2Body*>::iterator pos;
+    for(pos = contactListener->contacts.begin(); 
+        pos != contactListener->contacts.end(); ++pos)
+    {
+        b2Body *body = *pos;
+        
+        CCNode *contactNode = (CCNode*)body->GetUserData();
+        CGPoint position = contactNode.position;
+        [self removeChild:contactNode cleanup:YES];
+        world->DestroyBody(body);
+        
+        [targets removeObject:[NSValue valueWithPointer:body]];
+        [enemies removeObject:[NSValue valueWithPointer:body]];
+
+        CCParticleSun* explosion = [[CCParticleSun alloc] initWithTotalParticles:200];
+        explosion.autoRemoveOnFinish = YES;
+        explosion.startSize = 10.0f;
+        explosion.speed = 70.0f;
+        explosion.anchorPoint = ccp(0.5f,0.5f);
+        explosion.position = position;
+        explosion.duration = 1.0f;
+        [self addChild:explosion z:11];
+        [explosion release];
+    }
+    
+    // remove everything from the set
+    contactListener->contacts.clear();
 }
 
 // on "dealloc" you need to release all your retained objects
@@ -483,6 +515,9 @@ enum {
 	delete world;
 	world = NULL;
 	
+    delete contactListener;
+    contactListener = NULL;
+
 	delete m_debugDraw;
 
 	// don't forget to call "super dealloc"
