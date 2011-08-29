@@ -185,9 +185,44 @@ enum {
 
 - (void)resetGame
 {
+    // Previous bullets cleanup
+    if (bullets)
+    {
+        for (NSValue *bulletPointer in bullets)
+        {
+            b2Body *bullet = (b2Body*)[bulletPointer pointerValue];
+            CCNode *node = (CCNode*)bullet->GetUserData();
+            [self removeChild:node cleanup:YES];
+            world->DestroyBody(bullet);
+        }
+        [bullets release];
+        bullets = nil;
+    }
+
+    // Previous targets cleanup
+    if (targets)
+    {
+        for (NSValue *bodyValue in targets)
+        {
+            b2Body *body = (b2Body*)[bodyValue pointerValue];
+            CCNode *node = (CCNode*)body->GetUserData();
+            [self removeChild:node cleanup:YES];
+            world->DestroyBody(body);
+        }
+        [targets release];
+        [enemies release];
+        targets = nil;
+        enemies = nil;
+    }
+
     [self createBullets:4];
-    [self attachBullet];
     [self createTargets];
+    [self runAction:[CCSequence actions:
+                     [CCMoveTo actionWithDuration:1.5f position:CGPointMake(-480.0f, 0.0f)], 
+                     [CCCallFuncN actionWithTarget:self selector:@selector(attachBullet)],
+                     [CCDelayTime actionWithDuration:1.0f],
+                     [CCMoveTo actionWithDuration:1.5f position:CGPointZero],
+                     nil]];
 }
 
 - (void)createBullets:(int)count
@@ -258,7 +293,7 @@ enum {
     if ([enemies count] == 0)
     {
         // game over
-        // We'll do something here later
+        [self performSelector:@selector(resetGame) withObject:nil afterDelay:2.0f];
     }
     else if ([self attachBullet])
     {
@@ -267,7 +302,7 @@ enum {
     else
     {
         // We can reset the whole scene here
-        // Also, let's do this later
+        [self performSelector:@selector(resetGame) withObject:nil afterDelay:2.0f];
     }
 }
 
